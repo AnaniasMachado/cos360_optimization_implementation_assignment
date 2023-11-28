@@ -82,9 +82,11 @@ def BFGS(f, df, x0, dimensions, k=1000):
         elif i == dimensions:
             for i in range(0, 10):
                 if (np.linalg.det(p) == 0):
-                    p = p + np.random.normal(0, 1, p.shape)
+                    # p = p + np.random.normal(-0.01*np.linalg.norm(p), 0.01*np.linalg.norm(p), p.shape)
+                    p = p + np.random.normal(-0.1, 0.1, p.shape)
                 if (np.linalg.det(q) == 0):
-                    q = q + np.random.normal(0, 1, q.shape)
+                    # q = q + np.random.normal(-0.01*np.linalg.norm(q), 0.01*np.linalg.norm(q), q.shape)
+                    q = q + np.random.normal(-0.1, 0.1, q.shape)
             if (np.linalg.det(np.transpose(p)) == 0) or (np.linalg.det(np.transpose(q)) == 0):
                 print("Elif.")
                 print("Matrix p or q is singular.")
@@ -134,6 +136,9 @@ def BFGS(f, df, x0, dimensions, k=1000):
                 print("Else.")
                 print("Nan value in matrix Hf.")
                 return x0
+            for i in range(0, 10):
+                if (np.linalg.det(Hf) == 0):
+                    Hf = Hf + np.random.normal(-0.01*np.linalg.norm(Hf), 0.01*np.linalg.norm(Hf), Hf.shape)
             if (np.linalg.det(Hf) == 0):
                 print("Else.")
                 print("Matrix Hf is singular.")
