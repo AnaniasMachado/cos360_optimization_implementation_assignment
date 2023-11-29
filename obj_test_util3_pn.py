@@ -1,4 +1,7 @@
 import numpy as np
+from penalization_fn import p, partial_p, hessian_term_p
+
+rho = 0.001
 
 def prod(x, exclude):
     out = 1
@@ -8,10 +11,10 @@ def prod(x, exclude):
     return out
 
 def f(x):
-    return prod(x, exclude=[]) + 1
+    return prod(x, exclude=[]) + 1 + rho * p(x)
 
 def partial_f(x, j):
-    return (1 - 2 * x[j]) * prod(x, exclude=[j])
+    return (1 - 2 * x[j]) * prod(x, exclude=[j]) + rho * partial_p(x, j)
 
 def gradient_f(x):
     gradient = []
@@ -30,7 +33,7 @@ def hessian_f(x):
     for i in range(0, 5):
         row = []
         for j in range(0, 5):
-            hessian_ij = hessian_term_f(x, i, j)
+            hessian_ij = hessian_term_f(x, i, j) + rho * hessian_term_p(x, i, j)
             row.append(hessian_ij)
         H.append(row)
     return H
